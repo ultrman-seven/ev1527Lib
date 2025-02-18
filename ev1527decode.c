@@ -92,15 +92,16 @@ evU8_t __checkId(ev1527_core *c)
     /// TODO: debug mcu e2prom
     // return 1;
     evU32_t id = c->receiveData;
-    evU16_t cnt;
+    // evU16_t cnt;
     id >>= 4;
-    cnt = c->registeredLen;
-    while (cnt--)
-    {
-        if (id == c->registeredIDs[cnt])
-            return 1;
-    }
-    return 0;
+    return c->hook->flash.check(id);
+    // cnt = c->registeredLen;
+    // while (cnt--)
+    // {
+    //     if (id == c->registeredIDs[cnt])
+    //         return 1;
+    // }
+    // return 0;
 }
 
 // static inline void __addID(ev1527_core *c, evU32_t id)

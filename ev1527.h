@@ -14,6 +14,7 @@ typedef struct
     struct
     {
         void (*dataAppend)(evU32_t);
+        evU8_t (*check)(evU32_t);
         // void (*load)(evU32_t **, evU32_t *);
     } flash;
 } ev1527_Hooks;
@@ -70,8 +71,8 @@ typedef struct
         evU32_t clkTime;
     } __state;
 
-    evU32_t *registeredIDs;
-    evU32_t registeredLen;
+    // evU32_t *registeredIDs;
+    // evU32_t registeredLen;
     ev1527_Hooks *hook;
 } ev1527_core;
 
