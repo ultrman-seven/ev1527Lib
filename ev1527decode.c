@@ -1,4 +1,5 @@
 #include "ev1527.h"
+#define ContinueLogTimes 3
 
 typedef enum
 {
@@ -20,6 +21,8 @@ void ev1527Init(ev1527_core *core)
     core->__state.dataLen = 0;
     core->keyState = keyState_NotPressed;
     core->learning = 0;
+    core->__state.cnt4SameRcv = 0;
+    core->__state.lastRcvData = 0;
     // core->hook->flash.load(&(core->registeredIDs), &(core->registeredLen));
 }
 
@@ -45,7 +48,7 @@ void evRaise(ev1527_core *c)
         if (c->__state.lastTimeStamp == 0)
             return;
         signalRate = us / c->__state.lastTimeStamp;
-        if (signalRate < 29)
+        if (signalRate < 25)
             return;
         if (signalRate > 36)
             return;
@@ -142,6 +145,16 @@ void evFall(ev1527_core *c)
         //     // c->keyState = keyState_Short;
         //     c->learning = 0;
         // }
+
+        if (c->__state.lastRcvData == c->receiveData)
+            ++(c->__state.cnt4SameRcv);
+        else
+            c->__state.cnt4SameRcv = 0;
+        c->__state.lastRcvData = c->receiveData;
+
+        if (c->__state.cnt4SameRcv < ContinueLogTimes)
+            return;
+
         if (c->learning)
         {
             if (!__checkId(c))

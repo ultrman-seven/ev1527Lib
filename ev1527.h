@@ -40,14 +40,15 @@ typedef struct
     evU8_t keyState : 4;
     evU32_t receiveData;
 #else
-    struct
-    {
-        evU32_t learning : 1;
-        evU32_t keyState : 4;
-        evU32_t receiveData : 24;
-        // evU32_t id : 20;
-        // evU32_t keyVal : 4;
-    };
+    // struct
+    // {
+    evU32_t learning : 1;
+    evU32_t keyState : 4;
+    evU32_t receiveData : 24;
+    // evU32_t receiveData;
+    // evU32_t id : 20;
+    // evU32_t keyVal : 4;
+    // };
 #endif
 
     struct
@@ -59,11 +60,15 @@ typedef struct
 #ifdef __C51__
         evU8_t isStarted : 1;
         evU8_t dataLen : 5;
-        evU16_t continuePressLog;
+        // evU16_t continuePressLog;
+        evU16_t cnt4SameRcv;
+        evU32_t lastRcvData;
 #else
         evU32_t isStarted : 1;
         evU32_t dataLen : 5;
-        evU32_t continuePressLog : 16;
+        evU32_t lastRcvData : 24;
+        // evU32_t continuePressLog : 16;
+        evU32_t cnt4SameRcv : 16;
 #endif
         // evU32_t timeGap;
         evU32_t lastTimeStamp;
