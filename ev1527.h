@@ -85,5 +85,5 @@ void ev1527Init(ev1527_core *);
 // void ev1527TriggerCallback(ev1527_core *);
 void evRaise(ev1527_core *core);
 void evFall(ev1527_core *core);
-evU8_t evOK(ev1527_core *core);
+// evU8_t evOK(ev1527_core *core);
 #endif

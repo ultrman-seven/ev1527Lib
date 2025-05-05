@@ -26,14 +26,14 @@ void ev1527Init(ev1527_core *core)
     // core->hook->flash.load(&(core->registeredIDs), &(core->registeredLen));
 }
 
-evU8_t evOK(ev1527_core *c)
-{
-    evU32_t us;
-    us = c->hook->timer.getUsTime();
-    if (us >= 500000)
-        return 1;
-    return 0;
-}
+// evU8_t evOK(ev1527_core *c)
+// {
+//     evU32_t us;
+//     us = c->hook->timer.getUsTime();
+//     if (us >= 500000)
+//         return 1;
+//     return 0;
+// }
 
 void evRaise(ev1527_core *c)
 {
@@ -176,8 +176,8 @@ void evFall(ev1527_core *c)
 }
 
 // static inline void __keyLearn(ev1527_core *c, evU32_t id)
-void __keyLearn(ev1527_core *c, evU32_t id)
-{
-    // c->hook->flash.dataAppend(id);
-    // c->hook->flash.load(&(c->registeredIDs), &(c->registeredLen));
-}
+// void __keyLearn(ev1527_core *c, evU32_t id)
+// {
+//     // c->hook->flash.dataAppend(id);
+//     // c->hook->flash.load(&(c->registeredIDs), &(c->registeredLen));
+// }
