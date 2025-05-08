@@ -3,10 +3,6 @@
 
 typedef enum
 {
-    // evDecodeWait4StartHigh = 0,
-    // evDecodeWait4StartLow,
-    // evDecodeWait4DataHigh,
-    // evDecodeWait4DataLow
     evDecodeStart = 0,
     evDecodeData,
     evDecodeWait4Start,
@@ -23,6 +19,7 @@ void ev1527Init(ev1527_core *core)
     core->learning = 0;
     core->__state.cnt4SameRcv = 0;
     core->__state.lastRcvData = 0;
+    core->learnOk = 0;
     // core->hook->flash.load(&(core->registeredIDs), &(core->registeredLen));
 }
 
@@ -68,54 +65,21 @@ void evRaise(ev1527_core *c)
         c->__state.clkTime += us;
         ++c->__state.dataLen;
     }
-
-    // belows r wtf bro
-
-    // if (c->__state.decode == evDecodeStart)
-    // {
-    // __StartCodeRaise:
-    //     return;
-    // }
-
-    // // check if it is start code
-    // if (us / c->__state.lastTimeStamp >= 5)
-    // {
-    //     c->__state.decode = evDecodeData;
-    // }
-    // else
-    // {
-    //     c->__state.decode = evDecodeStart;
-    //     goto __StartCodeRaise;
-    // }
 }
 
-// static inline evU8_t __checkId(ev1527_core *c)
 evU8_t __checkId(ev1527_core *c)
 {
-    /// TODO: debug mcu e2prom
-    // return 1;
     evU32_t id = c->receiveData;
-    // evU16_t cnt;
     id >>= 4;
     return c->hook->flash.check(id);
-    // cnt = c->registeredLen;
-    // while (cnt--)
-    // {
-    //     if (id == c->registeredIDs[cnt])
-    //         return 1;
-    // }
-    // return 0;
 }
 
 // static inline void __addID(ev1527_core *c, evU32_t id)
-void __addID(ev1527_core *c)
-{
-    evU32_t id;
-    id = c->receiveData;
-    id >>= 4;
-    c->hook->flash.dataAppend(id);
-    // c->hook->flash.load(&(c->registeredIDs), &(c->registeredLen));
-}
+// void __addID(ev1527_core *c)
+// {
+//     evU32_t id;
+//     // c->hook->flash.load(&(c->registeredIDs), &(c->registeredLen));
+// }
 
 void evFall(ev1527_core *c)
 {
@@ -158,7 +122,13 @@ void evFall(ev1527_core *c)
         if (c->learning)
         {
             if (!__checkId(c))
-                __addID(c);
+            {
+                evU32_t newId;
+                newId = c->receiveData;
+                newId >>= 4;
+                c->hook->flash.dataAppend(newId);
+                c->learnOk = 1;
+            }
             // c->keyState = keyState_Short;
             c->learning = 0;
         }
@@ -168,16 +138,8 @@ void evFall(ev1527_core *c)
     }
 
     c->__state.lastTimeStamp = us;
-    // if (c->__state.lastTimeStamp > us) // high
-    // {
-    //     ++c->receiveData;
-    //     /// TODO: compute time of bit 1 vol high
-    // }
 }
 
-// static inline void __keyLearn(ev1527_core *c, evU32_t id)
-// void __keyLearn(ev1527_core *c, evU32_t id)
+// void evLoop(ev1527_core *c)
 // {
-//     // c->hook->flash.dataAppend(id);
-//     // c->hook->flash.load(&(c->registeredIDs), &(c->registeredLen));
 // }

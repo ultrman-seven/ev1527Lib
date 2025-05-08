@@ -37,12 +37,14 @@ typedef struct
     //     evU8_t keyState : 4;
     // };
     evU8_t learning : 1;
+    evU8_t learnOk : 1;
     evU8_t keyState : 4;
     evU32_t receiveData;
 #else
     // struct
     // {
     evU32_t learning : 1;
+    evU32_t learnOk : 1;
     evU32_t keyState : 4;
     evU32_t receiveData : 24;
     // evU32_t receiveData;
@@ -85,5 +87,6 @@ void ev1527Init(ev1527_core *);
 // void ev1527TriggerCallback(ev1527_core *);
 void evRaise(ev1527_core *core);
 void evFall(ev1527_core *core);
+// void evLoop(ev1527_core *core);
 // evU8_t evOK(ev1527_core *core);
 #endif
