@@ -47,7 +47,7 @@ void evRaise(ev1527_core *c)
         signalRate = us / c->__state.lastTimeStamp;
         if (signalRate < 25)
             return;
-        if (signalRate > 36)
+        if (signalRate > 40)
             return;
         c->__state.isStarted = 1;
         // us += c->__state.lastTimeStamp;
